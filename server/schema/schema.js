@@ -1,6 +1,6 @@
 const graphql = require('graphql');
 const _ = require('lodash');
-const {GraphQlObjectType, GraphQLString, GraphQlSchema} = graphql;
+const {GraphQLObjectType, GraphQLString, GraphQLSchema} = graphql;
 
 
 //dummy data
@@ -16,7 +16,7 @@ var books = [
 //it called book and it has some fields 
 //we wrapped all the fields inside a function which returns object 
 
-const BookType = new GraphQlObjectType({ 
+const BookType = new GraphQLObjectType({ 
     name: 'Book',
     fields: ()=> ({
         id: {type: GraphQLString},
@@ -38,7 +38,7 @@ book(id:'123'){
     genre
 }
 */ 
-const RootQuery = GraphQlObjectType({
+const RootQuery = new GraphQLObjectType({
     name : 'RootQueryType',
     fields: {
         book: {
