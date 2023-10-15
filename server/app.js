@@ -3,8 +3,16 @@ const express = require('express');
 const {graphqlHTTP} = require('express-graphql');
 
 const schema = require('./schema/schema');
+
+const mongoose = require('mongoose');
 const app = express();
 
+mongoose.connect('mongodb+srv://vardhanb278:BBo0GHmtNcl1WiW8@cluster0.9g9ugg0.mongodb.net/');
+
+mongoose.connection.once('open', () => {
+    console.log('Db connection got complete');
+
+});
 
 app.use('/graphql', graphqlHTTP({
 
