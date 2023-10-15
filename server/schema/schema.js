@@ -1,6 +1,11 @@
 const graphql = require('graphql');
 const _ = require('lodash');
-const {GraphQLObjectType, GraphQLString, GraphQLSchema} = graphql;
+const {
+    GraphQLObjectType, 
+    GraphQLString,
+    GraphQLID, 
+    GraphQLInt,
+    GraphQLSchema} = graphql;
 
 
 //dummy data
@@ -8,6 +13,12 @@ var books = [
     {name : 'Name of the wind', genre: 'Fantasy', id: '1'},
     {name : 'The final empire', genre: 'Fantasy', id: '2'},
     {name : 'The long earth', genre: 'Fantasy', id: '3'},
+];
+
+var authors = [
+    {name : 'Patrick', age: '23', id: '1'},
+    {name : 'Brandon', age: '34', id: '2'},
+    {name : 'Terry', age: '44', id: '3'},
 ];
 
 
@@ -19,9 +30,20 @@ var books = [
 const BookType = new GraphQLObjectType({ 
     name: 'Book',
     fields: ()=> ({
-        id: {type: GraphQLString},
+        id: {type: GraphQLID},
         name: {type: GraphQLString},
         genre: {type: GraphQLString}
+    })
+
+
+});
+
+const AuthorType = new GraphQLObjectType({ 
+    name: 'Author',
+    fields: ()=> ({
+        id: {type: GraphQLID},
+        name: {type: GraphQLString},
+        age: {type: GraphQLInt}
     })
 
 
@@ -43,12 +65,19 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         book: {
             type: BookType,
-            args: {id: {type: GraphQLString}},
+            args: {id: {type: GraphQLID}},
             resolve(parent, args){
                 return _.find(books, {id: args.id});
                 //code to get data from db
             }
 
+        },
+        author: {
+            type: AuthorType,
+            args: {id: {type: GraphQLID}},
+            resolve(parent, args){
+                return _.find(authors, {id: args.id});
+            }
         }
     }
 });
