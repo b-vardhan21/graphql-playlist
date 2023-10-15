@@ -1,6 +1,11 @@
 const graphql = require('graphql');
 const _ = require('lodash');
-const {GraphQlObjectType, GraphQLString, GraphQlSchema} = graphql;
+const {
+    GraphQLObjectType, 
+    GraphQLString,
+    GraphQLID, 
+    GraphQLInt,
+    GraphQLSchema} = graphql;
 
 
 //dummy data
@@ -10,18 +15,35 @@ var books = [
     {name : 'The long earth', genre: 'Fantasy', id: '3'},
 ];
 
+var authors = [
+    {name : 'Patrick', age: '23', id: '1'},
+    {name : 'Brandon', age: '34', id: '2'},
+    {name : 'Terry', age: '44', id: '3'},
+];
+
 
 
 //here we define our first object type on this graph and it is book type
 //it called book and it has some fields 
 //we wrapped all the fields inside a function which returns object 
 
-const BookType = new GraphQlObjectType({ 
+const BookType = new GraphQLObjectType({ 
     name: 'Book',
     fields: ()=> ({
-        id: {type: GraphQLString},
+        id: {type: GraphQLID},
         name: {type: GraphQLString},
         genre: {type: GraphQLString}
+    })
+
+
+});
+
+const AuthorType = new GraphQLObjectType({ 
+    name: 'Author',
+    fields: ()=> ({
+        id: {type: GraphQLID},
+        name: {type: GraphQLString},
+        age: {type: GraphQLInt}
     })
 
 
@@ -38,17 +60,24 @@ book(id:'123'){
     genre
 }
 */ 
-const RootQuery = GraphQlObjectType({
+const RootQuery = new GraphQLObjectType({
     name : 'RootQueryType',
     fields: {
         book: {
             type: BookType,
-            args: {id: {type: GraphQLString}},
+            args: {id: {type: GraphQLID}},
             resolve(parent, args){
                 return _.find(books, {id: args.id});
                 //code to get data from db
             }
 
+        },
+        author: {
+            type: AuthorType,
+            args: {id: {type: GraphQLID}},
+            resolve(parent, args){
+                return _.find(authors, {id: args.id});
+            }
         }
     }
 });
