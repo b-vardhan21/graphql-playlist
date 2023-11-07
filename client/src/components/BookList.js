@@ -3,6 +3,8 @@ import { useQuery } from '@apollo/client';
 import { getBooksQuery } from '../queries/queries';
 
 // components
+
+//Just playing with github
 import BookDetails from './BookDetails';
 
 function BookList() {
